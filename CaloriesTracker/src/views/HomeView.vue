@@ -26,10 +26,27 @@ export default {
   data() {
     return {
       kcal: undefined,
-	  today: undefined
+	  today: undefined,
+	  image: ''
     }
   },
   methods : {
+	  onFileChange(e) {
+			var files = e.target.files || e.dataTransfer.files;
+			if (!files.length)
+				return;
+			this.createImage(files[0]);
+		},
+		createImage(file) {
+			var image = new Image();
+			var reader = new FileReader();
+			var vm = this;
+
+			reader.onload = (e) => {
+				vm.image = e.target.result;
+			};
+			reader.readAsDataURL(file);
+			},
         submitKcal: async function(){
 			var kcalValue = document.getElementById("kcal").value
 			await addKcal("test", kcalValue, this.today)
@@ -55,6 +72,10 @@ export default {
 	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
       <img class = "center" src="../assets/plate.png">
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
+	<div class = "center">
+		<input type="file" @change="onFileChange">
+		<img :src="image" />
+	</div>
   </main>
 </template>
 <style>
@@ -85,7 +106,7 @@ img {
       vertical-align: middle;
       text-align: center;
 		}
-		input{
+		#kcal{
 			height:34px;
       width: 100px;
       text-align: center;
