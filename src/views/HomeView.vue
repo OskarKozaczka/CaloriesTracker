@@ -8,7 +8,6 @@ import { ref, onMounted,createApp } from 'vue'
 			$('.minus').click(function () {
 				var $input = $(this).parent().find('input');
 				var count = parseInt($input.val()) - 1;
-				count = count < 1 ? 1 : count;
 				$input.val(count);
 				$input.change();
 				return false;
@@ -26,19 +25,41 @@ import { ref, onMounted,createApp } from 'vue'
 export default {
   data() {
     return {
-      kcal: 0
+      kcal: undefined,
+	  today: undefined,
+	  image: ''
     }
   },
   methods : {
+	  onFileChange(e) {
+			var files = e.target.files || e.dataTransfer.files;
+			if (!files.length)
+				return;
+			this.createImage(files[0]);
+		},
+		createImage(file) {
+			var image = new Image();
+			var reader = new FileReader();
+			var vm = this;
 
-            submitKcal: async function(){
-				const today = new Date();
-				const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-				var kcalValue = document.getElementById("kcal").value
-				await addKcal("test", kcalValue , date)
-                this.kcal = await getKcal("test",date);
+			reader.onload = (e) => {
+				vm.image = e.target.result;
+			};
+			reader.readAsDataURL(file);
+			},
+        submitKcal: async function(){
+			var kcalValue = document.getElementById("kcal").value
+			await addKcal("test", kcalValue, this.today)
+			this.kcal = await getKcal("test", this.today);
             }
-        }
+        },
+		async beforeMount() {
+			const today = new Date();
+			const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			this.today = date
+			this.kcal = await getKcal("test",this.today)
+			
+		}
 }
 </script>
 <template>
@@ -51,6 +72,10 @@ export default {
 	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
       <img class = "center" src="../assets/plate.png">
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
+	<div class = "center">
+		<input type="file" @change="onFileChange">
+		<img :src="image" />
+	</div>
   </main>
 </template>
 <style>
@@ -81,7 +106,7 @@ img {
       vertical-align: middle;
       text-align: center;
 		}
-		input{
+		#kcal{
 			height:34px;
       width: 100px;
       text-align: center;
