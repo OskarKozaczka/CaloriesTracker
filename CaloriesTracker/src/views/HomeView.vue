@@ -1,6 +1,8 @@
 <script setup>
-import TheWelcome from '@/components/TheWelcome.vue'
 import $ from "jquery";
+import { createUser,setPassword,setKcal,getKcal,addKcal } from '../DataProvider';
+import { ref, onMounted,createApp } from 'vue'
+
 
 	$(document).ready(function() {
 			$('.minus').click(function () {
@@ -19,24 +21,47 @@ import $ from "jquery";
 			});
 		});
 </script>
+<script>
 
+export default {
+  data() {
+    return {
+      kcal: 0
+    }
+  },
+  methods : {
+ 
+            // Creating function
+            submitKcal: async function(){
+				const today = new Date();
+				const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+				await addKcal("test",40,date)
+                this.kcal = await getKcal("test",date);
+            }
+        }
+}
+</script>
 <template>
   <main>
-      <div class="number">
+      <div class="number center">
         <span class="minus">-</span>
         <input type="text" value="1"/>
         <span class="plus">+</span>
       </div>
-      <img src="@/components/icons/Pizza_Pepperoni.svg">
-
-    <TheWelcome />
+	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
+      <img class = "center" src="../assets/plate.png">
+	  <h1 class = "center">Kcal: {{kcal}} </h1>
   </main>
 </template>
 <style>
+
+.center {
+	display: flex;
+	justify-content: center;
+	margin: auto;
+}
 img {
-  display: flex;
-  justify-content: center;
-  margin: auto;
+  width: 200px;
 }
 	span {cursor:pointer; }
 		.number{
@@ -45,6 +70,7 @@ img {
       justify-content: center;
 		}
 		.minus, .plus{
+			box-sizing: unset;
 			width:20px;
 			height:20px;
 			background:#f2f2f2;
@@ -64,6 +90,8 @@ img {
 			border-radius:4px;
       display: inline-block;
       vertical-align: middle;
+	  box-sizing: unset;
     }
 
 </style>
+
