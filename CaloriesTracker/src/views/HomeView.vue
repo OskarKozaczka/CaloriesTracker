@@ -8,7 +8,6 @@ import { ref, onMounted,createApp } from 'vue'
 			$('.minus').click(function () {
 				var $input = $(this).parent().find('input');
 				var count = parseInt($input.val()) - 1;
-				count = count < 1 ? 1 : count;
 				$input.val(count);
 				$input.change();
 				return false;
@@ -26,19 +25,24 @@ import { ref, onMounted,createApp } from 'vue'
 export default {
   data() {
     return {
-      kcal: 0
+      kcal: undefined,
+	  today: undefined
     }
   },
   methods : {
-
-            submitKcal: async function(){
-				const today = new Date();
-				const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-				var kcalValue = document.getElementById("kcal").value
-				await addKcal("test", kcalValue , date)
-                this.kcal = await getKcal("test",date);
+        submitKcal: async function(){
+			var kcalValue = document.getElementById("kcal").value
+			await addKcal("test", kcalValue, this.today)
+			this.kcal = await getKcal("test", this.today);
             }
-        }
+        },
+		async beforeMount() {
+			const today = new Date();
+			const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			this.today = date
+			this.kcal = await getKcal("test",this.today)
+			
+		}
 }
 </script>
 <template>
