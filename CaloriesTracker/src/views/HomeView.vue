@@ -30,12 +30,12 @@ export default {
     }
   },
   methods : {
- 
-            // Creating function
+
             submitKcal: async function(){
 				const today = new Date();
 				const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-				await addKcal("test",40,date)
+				var kcalValue = document.getElementById("kcal").value
+				await addKcal("test", kcalValue , date)
                 this.kcal = await getKcal("test",date);
             }
         }
@@ -45,7 +45,7 @@ export default {
   <main>
       <div class="number center">
         <span class="minus">-</span>
-        <input type="text" value="1"/>
+        <input id = "kcal" type="text" value="0"/>
         <span class="plus">+</span>
       </div>
 	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
