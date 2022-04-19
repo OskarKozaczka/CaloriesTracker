@@ -62,7 +62,7 @@ export default {
 		}
 }
 </script>
-<template>
+<template> 
   <main>
       <div class="number center">
         <span class="minus">-</span>
