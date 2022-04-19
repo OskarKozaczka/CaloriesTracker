@@ -3,12 +3,16 @@
 
 import $ from "jquery";
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var monthNum;
+
 export default {
   data() {
     return {
       month: undefined,
       day: undefined,
-      year: undefined
+      year: undefined,
+      
     }
   },
 
@@ -20,24 +24,34 @@ export default {
   methods : {
     setNumberDays(month){
       if(month === "February"){
-        $('.day29').remove();
-        $('.day30').remove();
-        $('.day31').remove();
+        $('.day29').hide();
+        $('.day30').hide();
+        $('.day31').hide();
       }
       else if(month === "November" || month === "June" || month === "September" || month === "April"){
-        $('.day31').remove();
+        $('.day31').hide();
+      }
+      else{
+        $('.day29').show();
+        $('.day30').show();
+        $('.day31').show();
       }
     },
 
     setCurrentDate() {
       const today = new Date();
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       this.day = today.getDate();
-      this.month = months[today.getMonth()];
+      monthNum = today.getMonth()
+      this.month = months[monthNum];
       this.year = today.getFullYear(this.month);
       $('.day'+this.day)[1].classList.add("active");
     },
 
+    changeMonth(monthModificator){
+      monthNum = monthNum + monthModificator
+      this.month = months[monthNum];
+      this.setNumberDays(this.month)
+    }
     
   }
 }
@@ -48,6 +62,8 @@ export default {
   <div class="history">
     <div class="month">      
   <ul>
+    <li @click="changeMonth(-1)">Previous</li>
+    <li @click="changeMonth(1)">Next</li>
     <li>
       {{month}}<br>
       <span style="font-size:18px">{{year}}</span>
