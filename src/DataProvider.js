@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app"
 import { getFirestore } from 'firebase/firestore'
 import { collection, getDoc, getDocs, setDoc, doc, updateDoc,increment } from 'firebase/firestore'
+import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDpRtZOjlHkosYblKMs_fTN1j1HbE7Aoxg",
@@ -14,6 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+const storage = getStorage(app);
 const db = getFirestore(app);
 
 
@@ -54,3 +57,18 @@ export async function getKcal(user,date) {
     console.log(kcal );
     return kcal;
 }
+
+
+export async function getUserImages(user,date) {
+    const data = await getDoc(doc(db, "users", user))
+    const img = data.data()["history"][date]["images"][0]
+    return await [getDownloadURL(ref(storage, img ))]
+}
+
+export async function uploadUserImage(file,filename,user,date) {
+    uploadBytes(ref(storage, 'userImages/' + filename), file )
+    await updateDoc(doc(db, "users", user), {
+        [`history.${date}.images`]:['userImages/'+filename]
+    });
+}
+

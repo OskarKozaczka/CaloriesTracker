@@ -1,6 +1,6 @@
 <script setup>
 import $ from "jquery";
-import { createUser,setPassword,setKcal,getKcal,addKcal } from '../DataProvider';
+import { createUser,setPassword,setKcal,getKcal,addKcal,getUserImages,uploadUserImage } from '../DataProvider';
 import { ref, onMounted,createApp } from 'vue'
 
 
@@ -19,6 +19,8 @@ import { ref, onMounted,createApp } from 'vue'
 				return false;
 			});
 		});
+
+		
 </script>
 <script>
 
@@ -27,7 +29,9 @@ export default {
     return {
       kcal: undefined,
 	  today: undefined,
-	  image: ''
+	  image: '',
+	  images: []
+
     }
   },
   methods : {
@@ -41,12 +45,16 @@ export default {
 			var image = new Image();
 			var reader = new FileReader();
 			var vm = this;
-
+			
 			reader.onload = (e) => {
 				vm.image = e.target.result;
 			};
 			reader.readAsDataURL(file);
 			},
+		send() {
+			var file = document.getElementById("upload").files[0]
+			uploadUserImage(file,file.name,"test",this.today)
+		},
         submitKcal: async function(){
 			var kcalValue = document.getElementById("kcal").value
 			await addKcal("test", kcalValue, this.today)
@@ -57,9 +65,10 @@ export default {
 			const today = new Date();
 			const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 			this.today = date
+			this.images = await getUserImages("test",this.today)
 			this.kcal = await getKcal("test",this.today)
 			
-		}
+		},
 }
 </script>
 <template> 
@@ -71,9 +80,12 @@ export default {
       </div>
 	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
       <img class = "center" src="../assets/plate.png">
+	    <div v-for="image in images" :key="image">{{image}}<img id='img' :src="image"/></div>
+		<div id= "images"></div>
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
 	<div class = "center">
-		<input type="file" @change="onFileChange">
+		<input id="upload" type="file" @change="onFileChange">
+		<button class = "center btn btn-secondary" type="button" @click="send()">Zapisz</button> 
 		<img :src="image" />
 	</div>
   </main>
