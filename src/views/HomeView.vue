@@ -36,7 +36,10 @@ export default {
 	  image3: null,
 	  image4: null,
 	  image5: null,
-
+	  image6: null,
+	  image7: null,
+	  image8: null,
+	  image9: null,
     }
   },
 	methods : {
@@ -45,6 +48,19 @@ export default {
 			if (!files.length)
 				return;
 			this.createImage(files[0]);
+		},
+		async getImages(){
+			this.images = await getUserImages("test",this.today)
+			this.image1 = this.images[0]
+			this.image2 = this.images[1]
+			this.image3 = this.images[2]
+			this.image4 = this.images[3]
+			this.image5 = this.images[4]
+			this.image6 = this.images[5]
+			this.image7 = this.images[6]
+			this.image8 = this.images[7]
+			this.image9 = this.images[8]
+			this.image10 = this.images[9]
 		},
 		createImage(file) {
 			var image = new Image();
@@ -61,26 +77,18 @@ export default {
 			var uploadElem = document.getElementById("upload")
 			var file = uploadElem.files[0] || null
 			uploadElem.value = null
-			addRecord("test", this.today, kcalValue, file)
+			await addRecord("test", this.today, kcalValue, file)
 			navigator.vibrate(200)
+			await this.getImages()
 		},
 	},
 	async beforeMount() {
 		const today = new Date();
 		const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 		this.today = date
-		this.images = await getUserImages("test",this.today)
-		console.log(this.images)
-		this.image1 = this.images[0]
-		this.image2 = this.images[1]
-		this.image3 = this.images[2]
-		this.image4 = this.images[3]
-		this.image5 = this.images[4]
-
+		await this.getImages()
 		this.kcal = await getKcal("test",this.today)
-		
 
-		
 	},
 }
 </script>
@@ -94,8 +102,8 @@ export default {
       <img class = "center" src="../assets/plate.png">
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
 		
-			<input class = "center btn btn-secondary" id="upload" type="file" accept="image/*;capture=camera" @change="onFileChange">
-			<button class = "center btn btn-secondary" type="button" @click="send()">Zapisz</button> 
+			<input class = "center btn btn-dark" id="upload" type="file" accept="image/*;capture=camera" @change="onFileChange">
+			<button class = "center btn btn-dark" type="button" @click="send()">Zapisz</button> 
 			
 		<div id = "userImages">
 			<img :src="image1" />
@@ -103,6 +111,10 @@ export default {
 			<img :src="image3" />
 			<img :src="image4" />
 			<img :src="image5" />
+			<img :src="image6" />
+			<img :src="image7" />
+			<img :src="image8" />
+			<img :src="image9" />
 		</div>
   </main>
 </template>
