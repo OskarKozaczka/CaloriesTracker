@@ -48,7 +48,19 @@ export default {
     },
 
     changeMonth(monthModificator){
-      monthNum = monthNum + monthModificator
+      $('.day'+this.day)[1].classList.remove("active");
+      if(monthNum === 11 && monthModificator === 1){
+        monthNum = 0;
+        this.year++;
+      }
+      else if(monthNum === 0 && monthModificator === -1){
+        monthNum = 11;
+        this.year--;
+      }
+      else{
+        monthNum = monthNum + monthModificator
+      }
+      
       this.month = months[monthNum];
       this.setNumberDays(this.month)
     }
@@ -70,16 +82,6 @@ export default {
     </li>
   </ul>
 </div>
-
-<ul class="weekdays">
-  <li>Mo</li>
-  <li>Tu</li>
-  <li>We</li>
-  <li>Th</li>
-  <li>Fr</li>
-  <li>Sa</li>
-  <li>Su</li>
-</ul>
 
 <ul class="days">  
   <li class="day1"><span class="day1" @click="dayClicked()">1</span></li>
