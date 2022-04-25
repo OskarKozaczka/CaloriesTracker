@@ -38,21 +38,15 @@ export async function setTargetKcal(user,kcal) {
     });
 }
 
-export async function setKcal(user,kcal,date) {
-    await updateDoc(doc(db, "users", user), {
-        history: {[date]: {kcal:kcal}}
-    });
-}
-
-export async function addKcal(user,kcal,date) {
-    await updateDoc(doc(db, "users", user), {
-    [`history.${date}.kcal`]: increment(kcal)
-    });
-}
-
 export async function getKcal(user,date) {
     const data = await getDoc(doc(db, "users", user))
-    const kcal = data.data()["history"][date]["kcal"]
+    const rows = data.data()["history"][date]
+    var kcal = 0
+
+    Object.entries(rows).map(async row => {
+        kcal += row[1]["kcal"]
+      })
+
     console.log(kcal );
     return kcal;
 }
@@ -60,17 +54,23 @@ export async function getKcal(user,date) {
 
 export async function getUserImages(user,date) {
     const data = await getDoc(doc(db, "users", user))
-    const images = data.data()["history"][date]["images"]
-    console.log(images)
+    const rows = data.data()["history"][date]
     var imagesUrls =[]
-    for (const element of images) imagesUrls.push(await getDownloadURL(ref(storage, element)))
-    return  imagesUrls
+
+    await Promise.all(Object.entries(rows).map(async row => {
+        imagesUrls.push(await getDownloadURL(ref(storage, row[1]['image'])))
+      }))
+    return imagesUrls
 }
 
-export async function uploadUserImage(file,filename,user,date) {
-    uploadBytes(ref(storage, 'userImages/' + filename), file )
+export async function addRecord(user,date,kcal,file) {
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     await updateDoc(doc(db, "users", user), {
-        [`history.${date}.images`]: arrayUnion('userImages/'+filename)
+        [`history.${date}.${time}`]: {kcal: Number.parseInt(kcal),image: file ? 'userImages/'+ file.name : "none.svg"}
     });
+    if (file) uploadBytes(ref(storage, 'userImages/' + file.name), file )
 }
+
 

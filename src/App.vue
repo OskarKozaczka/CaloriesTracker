@@ -37,14 +37,16 @@ export default {
 </script>
 
 <template>
-  <div id="login" v-if="logged_in == true">
+  <!-- <div id="login" v-if="logged_in == true">
     <RouterLink to="/login">Zalogowany</RouterLink>
   </div>
+  Nie wiem co z tym mam zrobić więc komentuje,@mrocin zmień to potem -->
   <div >
-      <nav v-if="logged_in === true">
-        <RouterLink to="/home">Home</RouterLink>
-        <RouterLink to="/history">History</RouterLink>
-        <RouterLink to="/settings">Settings</RouterLink>
+    
+      <nav class = "navbar navbar-dark bg-dark" v-if="logged_in === true">
+        <RouterLink class = "navbar-brand" to="/home">Home</RouterLink>
+        <RouterLink class = "navbar-brand" to="/history">History</RouterLink>
+        <RouterLink class = "navbar-brand" to="/settings">Settings</RouterLink>
       </nav>
     <RouterView />
   </div>

@@ -1,6 +1,6 @@
 <script setup>
 import $ from "jquery";
-import { createUser,setPassword,setKcal,getKcal,addKcal,getUserImages,uploadUserImage } from '../DataProvider';
+import { createUser,  getKcal, getUserImages, addRecord} from '../DataProvider';
 import { ref, onMounted,createApp } from 'vue'
 
 
@@ -36,15 +36,31 @@ export default {
 	  image3: null,
 	  image4: null,
 	  image5: null,
-
+	  image6: null,
+	  image7: null,
+	  image8: null,
+	  image9: null,
     }
   },
-  methods : {
-	  onFileChange(e) {
+	methods : {
+		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
 			if (!files.length)
 				return;
 			this.createImage(files[0]);
+		},
+		async getImages(){
+			this.images = await getUserImages("test",this.today)
+			this.image1 = this.images[0]
+			this.image2 = this.images[1]
+			this.image3 = this.images[2]
+			this.image4 = this.images[3]
+			this.image5 = this.images[4]
+			this.image6 = this.images[5]
+			this.image7 = this.images[6]
+			this.image8 = this.images[7]
+			this.image9 = this.images[8]
+			this.image10 = this.images[9]
 		},
 		createImage(file) {
 			var image = new Image();
@@ -56,30 +72,24 @@ export default {
 			};
 			reader.readAsDataURL(file);
 			},
-		send() {
-			var file = document.getElementById("upload").files[0]
-			uploadUserImage(file,file.name,"test",this.today)
-		},
-        submitKcal: async function(){
+		async send() {
 			var kcalValue = document.getElementById("kcal").value
-			await addKcal("test", kcalValue, this.today)
-			this.kcal = await getKcal("test", this.today);
-            }
-        },
-		async beforeMount() {
-			const today = new Date();
-			const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-			this.today = date
-			this.images = await getUserImages("test",this.today)
-			this.kcal = await getKcal("test",this.today)
-
-			this.image1 = await this.images[0]
-			this.image2 = await this.images[1]
-			this.image3 = await this.images[2]
-			this.image4 = await this.images[3]
-			this.image5 = await this.images[4]
-			
+			var uploadElem = document.getElementById("upload")
+			var file = uploadElem.files[0] || null
+			uploadElem.value = null
+			await addRecord("test", this.today, kcalValue, file)
+			navigator.vibrate(200)
+			await this.getImages()
 		},
+	},
+	async beforeMount() {
+		const today = new Date();
+		const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		this.today = date
+		await this.getImages()
+		this.kcal = await getKcal("test",this.today)
+
+	},
 }
 </script>
 <template> 
@@ -89,12 +99,22 @@ export default {
         <input id = "kcal" type="text" value="0"/>
         <span class="plus">+</span>
       </div>
-	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
-      <img class = "center" src="../assets/plate.png">
+	<!-- <div class="center">
+		<div class="circle-border">
+			<div class="circle">
+				<img  class = "plate" src="../assets/plate.png">
+			</div>
+		</div>
+	</div> -->
+
+	<div class="chart x-60">
+  <img  class = "plate" src="../assets/plate.png">
+</div>
+      
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
 		
-			<input class = "center btn btn-secondary" id="upload" type="file" accept="image/*;capture=camera" @change="onFileChange">
-			<button class = "center btn btn-secondary" type="button" @click="send()">Zapisz</button> 
+			<input class = "center btn btn-dark" id="upload" type="file" accept="image/*;capture=camera" @change="onFileChange">
+			<button class = "center btn btn-dark" type="button" @click="send()">Zapisz</button> 
 			
 		<div id = "userImages">
 			<img :src="image1" />
@@ -102,6 +122,10 @@ export default {
 			<img :src="image3" />
 			<img :src="image4" />
 			<img :src="image5" />
+			<img :src="image6" />
+			<img :src="image7" />
+			<img :src="image8" />
+			<img :src="image9" />
 		</div>
   </main>
 </template>
@@ -154,6 +178,74 @@ span {cursor:pointer; }
 	display: inline-block;
 	vertical-align: middle;
 	box-sizing: unset;
+}
+
+.plate{
+	position: relative;
+}
+.circle {
+  position: relative;
+  top: 5px;
+  left: 5px;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  border-radius: 100%;
+  background-color: #ffffff;
+}
+
+.circle-border {
+  position: relative;
+  text-align: center;
+  width: 310px;
+  height: 310px;
+  border-radius: 100%;
+  background-color: #E53B3B;
+  background: linear-gradient(270deg, black 50%, transparent 50%), linear-gradient(0deg, black 50%, lightgray 50%)
+}
+
+:root {
+  --size: 100px;
+  --bord: 10px;
+}
+
+.chart {
+  width: var(--size);
+    position: relative;
+  top: 5px;
+  left: 5px;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  margin: 1em auto;
+  border-radius: 50%;
+  background-image: conic-gradient(rgb(47, 212, 17) var(--value), lightgrey var(--value));
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - var(--bord));
+  height: calc(100% - var(--bord));
+
+  border-radius: inherit;
+}
+
+p {
+  position: relative;
+  z-index: 1;
+  font-size: 2em;
+}
+
+.x-60 {
+  --value: 60%;
 }
 
 </style>
