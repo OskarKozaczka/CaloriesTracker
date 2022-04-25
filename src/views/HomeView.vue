@@ -1,6 +1,6 @@
 <script setup>
 import $ from "jquery";
-import { createUser,setPassword,setKcal,getKcal,addKcal,getUserImages,uploadUserImage } from '../DataProvider';
+import { createUser,  getKcal, getUserImages, addRecord} from '../DataProvider';
 import { ref, onMounted,createApp } from 'vue'
 
 
@@ -39,8 +39,8 @@ export default {
 
     }
   },
-  methods : {
-	  onFileChange(e) {
+	methods : {
+		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
 			if (!files.length)
 				return;
@@ -56,30 +56,32 @@ export default {
 			};
 			reader.readAsDataURL(file);
 			},
-		send() {
-			var file = document.getElementById("upload").files[0]
-			uploadUserImage(file,file.name,"test",this.today)
-		},
-        submitKcal: async function(){
+		async send() {
 			var kcalValue = document.getElementById("kcal").value
-			await addKcal("test", kcalValue, this.today)
-			this.kcal = await getKcal("test", this.today);
-            }
-        },
-		async beforeMount() {
-			const today = new Date();
-			const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-			this.today = date
-			this.images = await getUserImages("test",this.today)
-			this.kcal = await getKcal("test",this.today)
-
-			this.image1 = await this.images[0]
-			this.image2 = await this.images[1]
-			this.image3 = await this.images[2]
-			this.image4 = await this.images[3]
-			this.image5 = await this.images[4]
-			
+			var uploadElem = document.getElementById("upload")
+			var file = uploadElem.files[0] || null
+			uploadElem.value = null
+			addRecord("test", this.today, kcalValue, file)
+			navigator.vibrate(200)
 		},
+	},
+	async beforeMount() {
+		const today = new Date();
+		const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		this.today = date
+		this.images = await getUserImages("test",this.today)
+		console.log(this.images)
+		this.image1 = this.images[0]
+		this.image2 = this.images[1]
+		this.image3 = this.images[2]
+		this.image4 = this.images[3]
+		this.image5 = this.images[4]
+
+		this.kcal = await getKcal("test",this.today)
+		
+
+		
+	},
 }
 </script>
 <template> 
@@ -89,7 +91,6 @@ export default {
         <input id = "kcal" type="text" value="0"/>
         <span class="plus">+</span>
       </div>
-	   <button class = "center btn btn-secondary" type="button" @click="submitKcal()">Zapisz</button> 
       <img class = "center" src="../assets/plate.png">
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
 		
