@@ -99,7 +99,18 @@ export default {
         <input id = "kcal" type="text" value="0"/>
         <span class="plus">+</span>
       </div>
-      <img class = "center" src="../assets/plate.png">
+	<!-- <div class="center">
+		<div class="circle-border">
+			<div class="circle">
+				<img  class = "plate" src="../assets/plate.png">
+			</div>
+		</div>
+	</div> -->
+
+	<div class="chart x-60">
+  <img  class = "plate" src="../assets/plate.png">
+</div>
+      
 	  <h1 class = "center">Kcal: {{kcal}} </h1>
 		
 			<input class = "center btn btn-dark" id="upload" type="file" accept="image/*;capture=camera" @change="onFileChange">
@@ -167,6 +178,74 @@ span {cursor:pointer; }
 	display: inline-block;
 	vertical-align: middle;
 	box-sizing: unset;
+}
+
+.plate{
+	position: relative;
+}
+.circle {
+  position: relative;
+  top: 5px;
+  left: 5px;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  border-radius: 100%;
+  background-color: #ffffff;
+}
+
+.circle-border {
+  position: relative;
+  text-align: center;
+  width: 310px;
+  height: 310px;
+  border-radius: 100%;
+  background-color: #E53B3B;
+  background: linear-gradient(270deg, black 50%, transparent 50%), linear-gradient(0deg, black 50%, lightgray 50%)
+}
+
+:root {
+  --size: 100px;
+  --bord: 10px;
+}
+
+.chart {
+  width: var(--size);
+    position: relative;
+  top: 5px;
+  left: 5px;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  margin: 1em auto;
+  border-radius: 50%;
+  background-image: conic-gradient(rgb(47, 212, 17) var(--value), lightgrey var(--value));
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - var(--bord));
+  height: calc(100% - var(--bord));
+
+  border-radius: inherit;
+}
+
+p {
+  position: relative;
+  z-index: 1;
+  font-size: 2em;
+}
+
+.x-60 {
+  --value: 60%;
 }
 
 </style>
