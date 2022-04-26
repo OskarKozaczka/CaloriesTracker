@@ -68,6 +68,21 @@ export async function getUserImages(user,date) {
     return imagesUrls
 }
 
+export async function getSingleImage(entry){
+    return await getDownloadURL(ref(storage, entry)).then(promise => {return promise})  
+}
+
+export async function getHistory(user){
+    const data = await getDoc(doc(db, "users", user))
+    const rows = data.data()["history"];
+
+    var historyDays = []
+    Object.entries(rows).map(row =>{
+        historyDays.push(row);
+    });
+    return historyDays;
+}
+
 export async function addRecord(user,date,kcal,file) {
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
