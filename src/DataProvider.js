@@ -59,8 +59,25 @@ export async function getUserImages(user,date) {
 
     await Promise.all(Object.entries(rows).map(async row => {
         imagesUrls.push(await getDownloadURL(ref(storage, row[1]['image'])))
+        console.log(imagesUrls)
       }))
     return imagesUrls
+}
+
+export async function getSingleImage(entry){
+    console.log(entry)
+    return await getDownloadURL(ref(storage, entry)).then(promise => {return promise})  
+}
+
+export async function getHistory(user){
+    const data = await getDoc(doc(db, "users", user))
+    const rows = data.data()["history"];
+
+    var historyDays = []
+    Object.entries(rows).map(row =>{
+        historyDays.push(row);
+    });
+    return historyDays;
 }
 
 export async function addRecord(user,date,kcal,file) {
