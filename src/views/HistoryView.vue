@@ -50,6 +50,7 @@ export default {
     },
 
     checkConsumption(date){
+      console.log(date)
       var dayNum = date[0].slice(date[0].length-2)
       var dayEntries = Object.entries(date[1])
       var sum = 0; 
@@ -70,25 +71,29 @@ export default {
       //this.images = await getUserImages("test", simpleDate)
       //console.log(this.images)
       console.log(history)
-      history.forEach(date => {
+      history.forEach( async date => {
         this.checkConsumption(date)
         if(date[0] === simpleDate){
           var dayEntries = Object.entries(date[1])
+          $("#userRows").append("<tr> <th>Hour</th> <th>Kcalories</th> <th>Photo</th></tr>")
           for(var i = 0; i < dayEntries.length; i++){
+            
+            this.image = await getSingleImage(dayEntries[i][1].image)
+            var hour = dayEntries[i][0].slice(0,5)
+            if(hour[4] === ":"){hour = hour.slice(0,-1)}
             var kcal = dayEntries[i][1].kcal
-            var test
-            this.image = getSingleImage(dayEntries[i][1].image)
-            this.image.then(function(result) {console.log(result)})
-            console.log(this.image)
-            $("#userRows").append("<div id='row"+i+"'><p>"+kcal+"</p><img src='"+this.image+"' /></div>");
+            await this.addImage(kcal, i, hour)
           }
         }
       });
     },
 
+    async addImage(kcal, i, hour){
+      console.log(hour)
+      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img src='"+this.image+"' /></td></tr>");},
+
     dayClicked(num){
       $("#userRows").empty()
-      console.log(num)
       const dateClicked = this.year+'-'+(monthNum+1)+'-'+num;
       console.log(dateClicked)
       this.showRows(dateClicked);
@@ -118,6 +123,7 @@ export default {
       
       this.month = months[monthNum];
       this.setNumberDays(this.month)
+      //checkConsumption(date)
     }
     
   }
@@ -174,9 +180,9 @@ export default {
   
 </ul>
   </div>
-  <div id = "userRows">
-
-	</div>
+  <table id="userRows">
+    
+  </table>
 </main>
 </template>
 
@@ -184,6 +190,27 @@ export default {
 * {box-sizing: border-box;}
 ul {list-style-type: none;}
 body {font-family: Verdana, sans-serif;}
+
+.row {
+   float:left;
+}
+
+table{
+  border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+tr{
+  background-color: #1abc9c;
+    color: #ffffff;
+    text-align: left;
+}
+td{
+  padding: 12px 15px;
+}
 
 .month {
   padding: 70px 25px;
