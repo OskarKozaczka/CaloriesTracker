@@ -21,20 +21,7 @@ import { ref, onMounted,createApp } from 'vue'
 		});
 
 		navigator.serviceWorker.register('sw.js');
-
-
-			Notification.requestPermission(function(result) {
-				if (result === 'granted') {
-				navigator.serviceWorker.ready.then(function(registration) {
-					registration.showNotification('Vibration Sample', {
-					body: 'Buzz! Buzz!',
-					icon: '../images/touch/chrome-touch-icon-192x192.png',
-					vibrate: [200, 100, 200, 100, 200, 100, 200],
-					tag: 'vibration-sample'
-					});
-				});
-				}
-			});
+		Notification.requestPermission()
 </script>
 <script>
 
@@ -81,6 +68,15 @@ export default {
 			this.image9 = this.images[8]
 			this.image10 = this.images[9]
 		},
+		push(kcal) {			
+				navigator.serviceWorker.ready.then(function(registration) {
+					registration.showNotification('Dodano wpis', {
+						body: `Kalorie: ${kcal}`,
+						vibrate: [200, 100, 200, 100, 200, 100, 200],
+						tag: 'vibration-sample'
+					});
+				});
+			},
 		createImage(file) {
 			var image = new Image();
 			var reader = new FileReader();
@@ -93,12 +89,14 @@ export default {
 			},
 		async send() {
 			var kcalValue = document.getElementById("kcal").value
+			this.push(kcalValue)
 			var uploadElem = document.getElementById("upload")
 			var file = uploadElem.files[0] || null
 			uploadElem.value = null
 			await addRecord("test", this.today, kcalValue, file)
 			navigator.vibrate(200)
 			await this.getImages()
+			
 		},
 	},
 	async beforeMount() {
