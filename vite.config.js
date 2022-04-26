@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      strategies: 'injectManifest',
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],  
       manifest: {
         name: 'Calories Tracker',
