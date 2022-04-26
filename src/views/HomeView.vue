@@ -1,6 +1,6 @@
 <script setup>
 import $ from "jquery";
-import { createUser,  getKcal, getUserImages, addRecord} from '../DataProvider';
+import { createUser,  getKcal, getUserImages, addRecord, getTargetKcal} from '../DataProvider';
 import { ref, onMounted,createApp } from 'vue'
 
 
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       kcal: undefined,
+	  targetKcal: undefined,
 	  today: undefined,
 	  image: '',
 	  images: [],
@@ -48,6 +49,10 @@ export default {
 			if (!files.length)
 				return;
 			this.createImage(files[0]);
+		},
+		setChartValue(current, max){
+			var value = current/max * 100 || 0 
+			document.querySelector('.chart').style.setProperty("--value", value+"%");
 		},
 		async getImages(){
 			this.images = await getUserImages("test",this.today)
@@ -88,8 +93,14 @@ export default {
 		this.today = date
 		await this.getImages()
 		this.kcal = await getKcal("test",this.today)
+		this.targetKcal = await getTargetKcal('test')
+		this.setChartValue(this.kcal,this.targetKcal)
+		
 
 	},
+	async onMounted(){
+		
+	}
 }
 </script>
 <template> 
@@ -107,7 +118,7 @@ export default {
 		</div>
 	</div> -->
 
-	<div class="chart x-60">
+	<div class="chart">
   <img  class = "plate" src="../assets/plate.png">
 </div>
       

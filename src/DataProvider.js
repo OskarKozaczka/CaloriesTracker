@@ -38,6 +38,11 @@ export async function setTargetKcal(user,kcal) {
     });
 }
 
+export async function getTargetKcal(user) {
+    const data = await getDoc(doc(db, "users", user))
+    return data.data()["settings"]["targetKcal"]
+}
+
 export async function getKcal(user,date) {
     const data = await getDoc(doc(db, "users", user))
     const rows = data.data()["history"][date]
