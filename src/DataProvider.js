@@ -59,13 +59,11 @@ export async function getUserImages(user,date) {
 
     await Promise.all(Object.entries(rows).map(async row => {
         imagesUrls.push(await getDownloadURL(ref(storage, row[1]['image'])))
-        console.log(imagesUrls)
       }))
     return imagesUrls
 }
 
 export async function getSingleImage(entry){
-    console.log(entry)
     return await getDownloadURL(ref(storage, entry)).then(promise => {return promise})  
 }
 

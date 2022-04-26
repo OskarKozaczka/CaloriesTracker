@@ -23,7 +23,7 @@ export default {
   mounted() {
     this.setCurrentDate();
     this.setNumberDays(this.month);
-    this.fillCalendar();
+    this.fillCalendar(0,0);
   },
 
   methods : {
@@ -45,25 +45,31 @@ export default {
 
     async fillCalendar(){
       history = await getHistory("test");
-      const dateToday = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      const dateToday = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+today.getDate();
       this.showRows(dateToday);
     },
 
     checkConsumption(date){
       console.log(date)
       var dayNum = date[0].slice(date[0].length-2)
+      if(dayNum < 0){dayNum = date[0].slice(date[0].length-1)}
       var dayEntries = Object.entries(date[1])
       var sum = 0; 
       for(var i = 0; i < dayEntries.length; i++){
         sum += dayEntries[i][1].kcal
       }
-      if(sum > 2000){
+      console.log(date[0][5])
+      console.log(monthNum+1)
+      if(date[0][5] == monthNum+1){
+        if(sum > 2000){
         $('.day'+dayNum)[1].classList.remove("under");
         $('.day'+dayNum)[1].classList.add("over");
       }
       else{
         $('.day'+dayNum)[1].classList.add("under");
       }
+      }
+      
     },
 
     async showRows(simpleDate){
@@ -89,13 +95,11 @@ export default {
     },
 
     async addImage(kcal, i, hour){
-      console.log(hour)
       $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img src='"+this.image+"' /></td></tr>");},
 
     dayClicked(num){
       $("#userRows").empty()
       const dateClicked = this.year+'-'+(monthNum+1)+'-'+num;
-      console.log(dateClicked)
       this.showRows(dateClicked);
     },
 
@@ -108,6 +112,11 @@ export default {
     },
 
     changeMonth(monthModificator){
+      for(var i = 1; i <= 31; i++){
+        $('.day'+i)[1].classList.remove("over");
+        $('.day'+i)[1].classList.remove("under");
+      }
+      
       $('.day'+this.day)[1].classList.remove("active");
       if(monthNum === 11 && monthModificator === 1){
         monthNum = 0;
@@ -120,7 +129,7 @@ export default {
       else{
         monthNum = monthNum + monthModificator
       }
-      
+      this.showRows(this.year+"-"+(monthNum+1)+"-"+this.day)
       this.month = months[monthNum];
       this.setNumberDays(this.month)
       //checkConsumption(date)
