@@ -191,7 +191,7 @@ export default {
   
 </ul>
   </div>
-  <table id="userRows">
+  <table class = "centerH" id="userRows">
     
   </table>
 </main>
@@ -209,21 +209,27 @@ body {font-family: Verdana, sans-serif;}
 table{
   border-collapse: collapse;
     margin: 25px 0;
-    margin-top: 0px;
     font-size: 0.9em;
     font-family: sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 tr{
+     display: flex;
   background-color: #1abc9c;
     color: #ffffff;
     text-align: left;
 }
 td{
   padding: 12px 15px;
+  margin: auto;
 }
 
+.centerH {
+  display: grid;
+	margin: auto;
+	margin-top:5px;
+}
 .month {
   padding: 70px 25px;
   width: 100%;
