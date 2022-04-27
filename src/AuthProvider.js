@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence, signOut} from "firebase/auth";
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut, deleteUser} from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDpRtZOjlHkosYblKMs_fTN1j1HbE7Aoxg",
@@ -91,4 +91,12 @@ export function getUserId(){
     }   else {
         throw "No user logged in"
     }
+}
+
+export function delete_user(){
+    deleteUser(current_user).then(() => {
+        console.log("user deleted")
+    }).catch((error) => {
+        console.log(error)
+    });
 }

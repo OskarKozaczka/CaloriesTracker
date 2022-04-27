@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { getFirestore , getDoc, getDocs, setDoc, doc, updateDoc,increment,arrayUnion } from 'firebase/firestore'
+import { getFirestore , getDoc, getDocs, setDoc, doc, updateDoc,increment,arrayUnion, deleteDoc  } from 'firebase/firestore'
 import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
 import {getUserEmail} from "./AuthProvider"
 
@@ -98,4 +98,6 @@ export async function addRecord(user,date,kcal,file) {
     
 }
 
-
+export async function deleteUserFromDB(user){
+    await deleteDoc(doc(db, "users", user));
+}

@@ -1,7 +1,7 @@
 <script>
 import { onBeforeUpdate, onMounted } from '@vue/runtime-core'
-import {getUserEmail, logOut, getUserId} from '../AuthProvider'
-import {checkIfUserExists, getTargetKcal, setTargetKcal} from '../DataProvider'
+import {getUserEmail, logOut, getUserId, delete_user} from '../AuthProvider'
+import {checkIfUserExists, getTargetKcal, setTargetKcal, deleteUserFromDB} from '../DataProvider'
 export default {
     data() {
         return {
@@ -21,6 +21,10 @@ export default {
         },
         async updateTarget(){
             setTargetKcal(getUserId(), this.target)
+        },
+        deleteUser(){
+            deleteUserFromDB(getUserId());
+            delete_user()
         }
     },
     async beforeMount(){
@@ -45,7 +49,8 @@ export default {
             <button type="submit" @click="updateTarget"> Zmień </button>
         </div>
 
-        <button class="logout" @click="signOut"> wyloguj </button>
+        <button class="logout" @click="signOut"> Wyloguj </button>
+        <button class="delete" @click="deleteUser"> Usuń konto </button>
   </div>
 </template>
 
@@ -97,7 +102,7 @@ button {
   text-transform: uppercase;
   outline: 0;
   background: #4CAF50;
-  width: 20%;
+  width: 90px;
   border: 0;
   padding: 15px;
   color: #FFFFFF;
@@ -110,6 +115,11 @@ button {
 .logout{
     margin: auto;
     margin-top: 50px;
+    width: 60%;
+}
+.delete{
+    margin: auto;
+    margin-top: 10px;
     width: 60%;
 }
 </style>
