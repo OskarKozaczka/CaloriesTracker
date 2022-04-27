@@ -1,8 +1,9 @@
 <script setup>
 import $ from "jquery";
-import { createUser,  getKcal, getUserImages, addRecord, getTargetKcal} from '../DataProvider';
+import { createUser,  getKcal, getUserImages, addRecord, getTargetKcal, checkIfUserExists} from '../DataProvider';
 import { ref, onMounted,createApp } from 'vue'
-import { getUserEmail } from '../AuthProvider';
+import {getUserId} from '../AuthProvider';
+ 
 
 
 	$(document).ready(function() {
@@ -108,7 +109,6 @@ export default {
 		this.targetKcal = await getTargetKcal('test')
 		this.setChartValue(this.kcal,this.targetKcal)
 		
-
 	},
 	async onMounted(){
 		

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app"
 import { getFirestore , getDoc, getDocs, setDoc, doc, updateDoc,increment,arrayUnion } from 'firebase/firestore'
 import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
+import {getUserEmail} from "./AuthProvider"
 
 
 const firebaseConfig = {
@@ -19,13 +20,23 @@ const storage = getStorage(app);
 const db = getFirestore(app);
 
 
-export async function createUser(user) {
-    await setDoc(doc(db, 'users', user), {
+export async function createUser(user_id) {
+    await setDoc(doc(db, 'users', user_id), {
         history: {},
-        settings: {kcalTarget:2000,email: user,password: "placeholder" }
+        settings: {kcalTarget:2000,email: getUserEmail()}
     });
 }
 
+
+export async function checkIfUserExists(user_id){
+    const data = await getDoc(doc(db, "users", user_id))
+    console.log(data)
+    if (data.exists()) {
+        return true
+    } else {
+        return false
+    }
+}
 
 export async function setTargetKcal(user,kcal) {
     await updateDoc(doc(db, "users", user), {
