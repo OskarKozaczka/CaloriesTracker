@@ -81,7 +81,6 @@ export default {
         this.checkConsumption(date)
         if(date[0] === simpleDate){
           var dayEntries = Object.entries(date[1])
-          $("#userRows").append("<tr> <th>Hour</th> <th>Kcalories</th> <th>Photo</th></tr>")
           for(var i = 0; i < dayEntries.length; i++){
             
             this.image = await getSingleImage(dayEntries[i][1].image)
@@ -189,7 +188,7 @@ export default {
   
 </ul>
   </div>
-  <table id="userRows">
+  <table class = "center" id="userRows">
     
   </table>
 </main>
@@ -221,6 +220,11 @@ td{
   padding: 12px 15px;
 }
 
+.center {
+  display: grid;
+	margin: auto;
+	margin-top:5px;
+}
 .month {
   padding: 70px 25px;
   width: 100%;
