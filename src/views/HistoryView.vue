@@ -96,7 +96,7 @@ export default {
     },
 
     async addImage(kcal, i, hour){
-      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img class='image' src='"+this.image+"' /></td></tr>");},
+      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img src='"+this.image+"' /></td></tr>");},
 
     dayClicked(num){
       $("#userRows").empty()
@@ -205,8 +205,8 @@ body {font-family: Verdana, sans-serif;}
 .row {
    float:left;
 }
-.image {
-  width: 200px;
+.imagee {
+  width: 100%;
 }
 
 table{
@@ -219,12 +219,13 @@ table{
 
 tr{
      display: flex;
-  background-color: #1abc9c;
+  background-color: #202228;
     color: #ffffff;
     text-align: left;
 }
+
 td{
-  padding: 4px 5px;
+  padding: 12px 15px;
   margin: auto;
 }
 
@@ -236,7 +237,7 @@ td{
 .month {
   padding: 70px 25px;
   width: 100%;
-  background: #1abc9c;
+  background: #202228;
   text-align: center;
 }
 
@@ -293,7 +294,7 @@ td{
 
 .days li .active {
   padding: 5px;
-  background: #1abc9c !important;
+  background: #202228 !important;
   color: white !important
 }
 
