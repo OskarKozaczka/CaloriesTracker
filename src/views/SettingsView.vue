@@ -57,8 +57,8 @@ export default {
             <div class="label">Powiadomienia</div>
         </div>
 
-        <button class="logout" @click="signOut"> Wyloguj </button>
-        <button class="delete" @click="deleteUser"> Usuń konto </button>
+        <button class="button logout" @click="signOut"> Wyloguj </button>
+        <button class="button delete" @click="deleteUser"> Usuń konto </button>
 
   </div>
 </template>
@@ -112,8 +112,6 @@ export default {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-
-  background: #4CAF50;
   background: #212529;
 
 
