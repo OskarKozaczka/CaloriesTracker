@@ -111,6 +111,7 @@ export default {
 			navigator.vibrate(200)
 			await addRecord(getUserId(), this.today, kcalValue, file)
 			await this.getImages()
+			this.kcal = await getKcal(getUserId(),this.today)
 			
 			
 			
