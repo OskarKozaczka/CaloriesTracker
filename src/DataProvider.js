@@ -31,11 +31,9 @@ export async function createUser(user_id) {
 export async function checkIfUserExists(user_id){
     const data = await getDoc(doc(db, "users", user_id))
     console.log(data)
-    if (data.exists()) {
-        return true
-    } else {
-        return false
-    }
+
+    try {data.data()['history'];return true}
+    catch {return false} 
 }
 
 export async function setTargetKcal(user,kcal) {
@@ -46,7 +44,8 @@ export async function setTargetKcal(user,kcal) {
 
 export async function getTargetKcal(user) {
     const data = await getDoc(doc(db, "users", user))
-    return data.data()["settings"]["targetKcal"]
+    console.log(data.data())
+    return data.data()["settings"]["kcalTarget"]
 }
 
 export async function getKcal(user,date) {
