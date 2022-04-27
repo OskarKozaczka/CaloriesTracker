@@ -78,6 +78,20 @@ export default {
 					});
 				});
 			},
+		
+		pushLimit(kcalLimit) {
+			if(kcalLimit > this.targetKcal){
+				var over = kcalLimit - this.targetKcal
+				navigator.serviceWorker.ready.then(function(registration) {
+
+						registration.showNotification('Przekroczono dzienny limit kaloryczny', {
+						body: `Limit przekroczony o : ${over}`
+					});
+					
+				});
+			}
+		},
+
 		createImage(file) {
 			var image = new Image();
 			var reader = new FileReader();
@@ -95,6 +109,7 @@ export default {
 			var file = uploadElem.files[0] || null
 			uploadElem.value = null
 			await addRecord(getUserId(), this.today, kcalValue, file)
+			this.pushLimit(this.kcal)
 			navigator.vibrate(200)
 			await this.getImages()
 			

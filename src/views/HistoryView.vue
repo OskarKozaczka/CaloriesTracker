@@ -113,6 +113,7 @@ export default {
     },
 
     changeMonth(monthModificator){
+      $("#userRows").empty()
       for(var i = 1; i <= 31; i++){
         $('.day'+i)[1].classList.remove("over");
         $('.day'+i)[1].classList.remove("under");
