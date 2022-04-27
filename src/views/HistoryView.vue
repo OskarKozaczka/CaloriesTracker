@@ -214,12 +214,14 @@ table{
 }
 
 tr{
+     display: flex;
   background-color: #1abc9c;
     color: #ffffff;
     text-align: left;
 }
 td{
   padding: 12px 15px;
+  margin: auto;
 }
 
 .centerH {
