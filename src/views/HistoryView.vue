@@ -3,7 +3,7 @@
 
 import $ from "jquery";
 import { getHistory, getUserImages, getSingleImage} from '../DataProvider';
-import {getUserEmail} from '../AuthProvider';
+import {getUserId} from '../AuthProvider';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var monthNum;
@@ -190,7 +190,7 @@ export default {
   
 </ul>
   </div>
-  <table class = "center" id="userRows">
+  <table class = "centerH" id="userRows">
     
   </table>
 </main>
@@ -222,7 +222,7 @@ td{
   padding: 12px 15px;
 }
 
-.center {
+.centerH {
   display: grid;
 	margin: auto;
 	margin-top:5px;
