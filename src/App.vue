@@ -37,10 +37,6 @@ export default {
 </script>
 
 <template>
-  <!-- <div id="login" v-if="logged_in == true">
-    <RouterLink to="/login">Zalogowany</RouterLink>
-  </div>
-  Nie wiem co z tym mam zrobić więc komentuje,@mrocin zmień to potem -->
   <div >
     
       <nav class = "navbar navbar-dark bg-dark" v-if="logged_in === true">
