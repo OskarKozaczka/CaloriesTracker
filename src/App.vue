@@ -40,14 +40,14 @@ export default {
   <div >
     
       <nav class = "navbar navbar-dark bg-dark" v-if="logged_in === true">
-        <RouterLink class = "navbar-brand" to="/home">Home</RouterLink>
-        <RouterLink class = "navbar-brand" to="/history">History</RouterLink>
-        <RouterLink class = "navbar-brand" to="/settings">Settings</RouterLink>
+        <RouterLink class = "navbar-brand" to="/home">Strona Główna</RouterLink>
+        <RouterLink class = "navbar-brand" to="/history">Historia</RouterLink>
+        <RouterLink class = "navbar-brand" to="/settings">Ustawienia</RouterLink>
       </nav>
     <RouterView />
   </div>
 </template>
 
 <style>
-
+.navbar-brand{margin: auto;}
 </style>

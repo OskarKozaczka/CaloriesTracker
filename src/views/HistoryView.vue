@@ -208,6 +208,9 @@ body {font-family: Verdana, sans-serif;}
 .row {
    float:left;
 }
+.imagee {
+  width: 100%;
+}
 
 table{
   border-collapse: collapse;
@@ -219,10 +222,11 @@ table{
 
 tr{
      display: flex;
-  background-color: #1abc9c;
+  background-color: #202228;
     color: #ffffff;
     text-align: left;
 }
+
 td{
   padding: 12px 15px;
   margin: auto;
@@ -236,7 +240,7 @@ td{
 .month {
   padding: 70px 25px;
   width: 100%;
-  background: #1abc9c;
+  background: #202228;
   text-align: center;
 }
 
@@ -293,7 +297,7 @@ td{
 
 .days li .active {
   padding: 5px;
-  background: #1abc9c !important;
+  background: #202228 !important;
   color: white !important
 }
 

@@ -74,7 +74,6 @@ export default {
 				navigator.serviceWorker.ready.then(function(registration) {
 					registration.showNotification('Dodano wpis', {
 						body: `Kalorie: ${kcal}`,
-						vibrate: [200],
 					});
 				});
 			},
@@ -93,7 +92,6 @@ export default {
 		},
 
 		createImage(file) {
-			var image = new Image();
 			var reader = new FileReader();
 			var vm = this;
 			
@@ -108,10 +106,13 @@ export default {
 			var uploadElem = document.getElementById("upload")
 			var file = uploadElem.files[0] || null
 			uploadElem.value = null
-			await addRecord(getUserId(), this.today, kcalValue, file)
-			this.pushLimit(this.kcal)
+			this.pushLimit(this.kcal+ parseInt(kcalValue))
+			this.setChartValue(this.kcal+ parseInt(kcalValue), this.targetKcal)
 			navigator.vibrate(200)
+			await addRecord(getUserId(), this.today, kcalValue, file)
 			await this.getImages()
+			
+			
 			
 		},
 	},
@@ -121,7 +122,7 @@ export default {
 		this.today = date
 		await this.getImages()
 		this.kcal = await getKcal(getUserId(),this.today)
-		this.targetKcal = await getTargetKcal('test')
+		this.targetKcal = await getTargetKcal(getUserId())
 		this.setChartValue(this.kcal,this.targetKcal)
 		
 	},

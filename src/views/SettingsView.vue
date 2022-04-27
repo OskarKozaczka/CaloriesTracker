@@ -58,7 +58,6 @@ export default {
 }
 
 .title {
-    text-align: right;
     float: right;
     font-size: 40px
 }
@@ -96,7 +95,7 @@ button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: #212529;
   width: 20%;
   border: 0;
   padding: 15px;
