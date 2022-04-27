@@ -2,10 +2,10 @@
 <script>
 
 import $ from "jquery";
-import { getHistory, getUserImages, getSingleImage} from '../DataProvider';
+import { getHistory, getUserImages, getSingleImage, getTargetKcal} from '../DataProvider';
 import {getUserId} from '../AuthProvider';
 
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
 var monthNum;
 var today = new Date();
 var history
@@ -17,24 +17,26 @@ export default {
       day: undefined,
       year: undefined,
       image: undefined,
-      
+      user: undefined,
+      target: undefined,
     }
   },
 
   mounted() {
     this.setCurrentDate();
     this.setNumberDays(this.month);
+    this.user = getUserId();
     this.fillCalendar(0,0);
   },
 
   methods : {
     setNumberDays(month){
-      if(month === "February"){
+      if(month === "Luty"){
         $('.day29').hide();
         $('.day30').hide();
         $('.day31').hide();
       }
-      else if(month === "November" || month === "June" || month === "September" || month === "April"){
+      else if(month === "Listopad" || month === "Czerwiec" || month === "Wrzesień" || month === "Kwiecień"){
         $('.day31').hide();
       }
       else{
@@ -45,13 +47,14 @@ export default {
     },
 
     async fillCalendar(){
-      console.log(await getUserId())
-      history = await getHistory(await getUserId());
+      //this.target = await getTargetKcal(this.user)
+      history = await getHistory(this.user);
       const dateToday = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+today.getDate();
       this.showRows(dateToday);
     },
 
-    checkConsumption(date){
+    async checkConsumption(date){
+      this.target = getTargetKcal(this.user)
       console.log(date)
       var dayNum = date[0].slice(date[0].length-2)
       if(dayNum < 0){dayNum = date[0].slice(date[0].length-1)}
@@ -60,10 +63,9 @@ export default {
       for(var i = 0; i < dayEntries.length; i++){
         sum += dayEntries[i][1].kcal
       }
-      console.log(date[0][5])
-      console.log(monthNum+1)
+
       if(date[0][5] == monthNum+1){
-        if(sum > 2000){
+        if(sum > await this.target){
         $('.day'+dayNum)[1].classList.remove("under");
         $('.day'+dayNum)[1].classList.add("over");
       }
@@ -96,7 +98,7 @@ export default {
     },
 
     async addImage(kcal, i, hour){
-      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img src='"+this.image+"' /></td></tr>");},
+      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img class = 'image' src='"+this.image+"' /></td></tr>");},
 
     dayClicked(num){
       $("#userRows").empty()
@@ -147,8 +149,8 @@ export default {
   <div class="history">
     <div class="month">      
   <ul>
-    <li @click="changeMonth(-1)">Previous</li>
-    <li @click="changeMonth(1)">Next</li>
+    <li @click="changeMonth(-1)">Poprzedni</li>
+    <li @click="changeMonth(1)">Następny</li>
     <li>
       {{month}}<br>
       <span style="font-size:18px">{{year}}</span>
@@ -205,6 +207,9 @@ body {font-family: Verdana, sans-serif;}
 .row {
    float:left;
 }
+.image {
+  width: 200px;
+}
 
 table{
   border-collapse: collapse;
@@ -216,10 +221,11 @@ table{
 
 tr{
      display: flex;
-  background-color: #1abc9c;
+  background-color: #202228;
     color: #ffffff;
     text-align: left;
 }
+
 td{
   padding: 12px 15px;
   margin: auto;
@@ -233,7 +239,7 @@ td{
 .month {
   padding: 70px 25px;
   width: 100%;
-  background: #1abc9c;
+  background: #202228;
   text-align: center;
 }
 
@@ -290,14 +296,14 @@ td{
 
 .days li .active {
   padding: 5px;
-  background: #1abc9c !important;
+  background: #202228 !important;
   color: white !important
 }
 
 .days li .over {
   padding: 5px;
   background: red;
-  color: black !important
+  color: black
 }
 
 .days li .under {
@@ -308,15 +314,15 @@ td{
 
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
-  .weekdays li, .days li {width: 13.1%;}
+  .row .weekdays li, .days li {width: 13.1%;}
 }
 
 @media screen and (max-width: 420px) {
-  .weekdays li, .days li {width: 12.5%;}
-  .days li .active {padding: 2px;}
+  .row .weekdays li, .days li {width: 12.5%;}
+  .row .days li .active {padding: 2px;}
 }
 
 @media screen and (max-width: 290px) {
-  .weekdays li, .days li {width: 12.2%;}
+  .row .weekdays li, .days li {width: 12.2%;}
 }
 </style>

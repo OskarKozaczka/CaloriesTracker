@@ -46,7 +46,7 @@ export default {
         <div class="target">
             <div class=""> Dzienny cel kaloryczny</div>
             <input type="number" v-model="target">
-            <button type="submit" @click="updateTarget"> Zmień </button>
+            <button class = "button" type="submit" @click="updateTarget"> Zmień </button>
         </div>
 
         <div class="notify">
@@ -59,6 +59,7 @@ export default {
 
         <button class="logout" @click="signOut"> Wyloguj </button>
         <button class="delete" @click="deleteUser"> Usuń konto </button>
+
   </div>
 </template>
 
@@ -74,7 +75,6 @@ export default {
 }
 
 .title {
-    text-align: right;
     float: right;
     font-size: 40px
 }
@@ -108,14 +108,18 @@ export default {
 .target input button {
     margin:10px;
 }
-button {
+.button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
+
   background: #4CAF50;
-  width: 90px;
+  background: #212529;
+
+
   border: 0;
   padding: 15px;
+  min-width: 26%;
   color: #FFFFFF;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
