@@ -27,6 +27,7 @@ export async function createUser(user_id) {
     });
 }
 
+
 export async function checkIfUserExists(user_id){
     const data = await getDoc(doc(db, "users", user_id))
     console.log(data)
@@ -35,12 +36,6 @@ export async function checkIfUserExists(user_id){
     } else {
         return false
     }
-}
-
-export async function setPassword(user,password) {
-    await updateDoc(doc(db, "users", user), {
-        settings: {password: password }
-    });
 }
 
 export async function setTargetKcal(user,kcal) {
@@ -97,11 +92,11 @@ export async function getHistory(user){
 export async function addRecord(user,date,kcal,file) {
     var today = new Date();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
+    if (file) await uploadBytes(ref(storage, 'userImages/' + file.name), file )
     await updateDoc(doc(db, "users", user), {
         [`history.${date}.${time}`]: {kcal: Number.parseInt(kcal),image: file ? 'userImages/'+ file.name : "none.svg"}
     });
-    if (file) uploadBytes(ref(storage, 'userImages/' + file.name), file )
+    
 }
 
 
