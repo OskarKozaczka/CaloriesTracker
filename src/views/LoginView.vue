@@ -26,12 +26,13 @@ export default {
         }
     
     },
-    unmounted(){
+    async unmounted(){
       	console.log("unmounting login")
         console.log("getUserId", getUserId())
-		    console.log("userExists", checkIfUserExists(getUserId()))
+		    console.log("userExists", await checkIfUserExists(getUserId()))
+
 	
-        if(checkIfUserExists(getUserId())){
+        if(await checkIfUserExists(getUserId()) === false){
           console.log("creating user")
         	createUser(getUserId())
       }else{

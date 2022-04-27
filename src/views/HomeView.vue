@@ -140,20 +140,19 @@ export default {
 			<button class = "center btn btn-dark" type="button" @click="send()">Zapisz</button> 
 			
 		<div  id = "userImages">
-			<img class = "center" :src="image1" />
-			<img class = "center" :src="image2" />
-			<img class = "center" :src="image3" />
-			<img class = "center" :src="image4" />
-			<img class = "center" :src="image5" />
-			<img class = "center" :src="image6" />
-			<img class = "center" :src="image7" />
-			<img class = "center" :src="image8" />
-			<img class = "center" :src="image9" />
+			<img class = "center foodImage" :src="image1" />
+			<img class = "center foodImage" :src="image2" />
+			<img class = "center foodImage" :src="image3" />
+			<img class = "center foodImage" :src="image4" />
+			<img class = "center foodImage" :src="image5" />
+			<img class = "center foodImage" :src="image6" />
+			<img class = "center foodImage" :src="image7" />
+			<img class = "center foodImage" :src="image8" />
+			<img class = "center foodImage" :src="image9" />
 		</div>
   </main>
 </template>
 <style>
-
 
 
 .center {
