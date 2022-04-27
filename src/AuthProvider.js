@@ -72,11 +72,22 @@ export async function logOut(){
         })
 }
 
-export async function getUserEmail(){
+export function getUserEmail(){
     const user = auth.currentUser;
     if (user) {
         console.log("current user email: ", user.email)
         return user.email
+    }   else {
+
+        throw "No user logged in"
+    }
+}
+
+export function getUserId(){
+    const user = auth.currentUser;
+    if (user) {
+        console.log("current user id: ", user.uid)
+        return user.uid
     }   else {
         throw "No user logged in"
     }

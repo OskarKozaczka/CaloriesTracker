@@ -1,5 +1,6 @@
 <script>
-import {createUserPassword, loginWithGoogle, getUserEmail, loginUserPassword, logOut} from '../AuthProvider'
+import {createUserPassword, loginWithGoogle, getUserEmail, loginUserPassword, logOut, getUserId} from '../AuthProvider'
+import {createUser, checkIfUserExists} from '../DataProvider'
 export default {
     data() {
         return {
@@ -24,6 +25,18 @@ export default {
           logOut()
         }
     
+    },
+    unmounted(){
+      	console.log("unmounting login")
+        console.log("getUserId", getUserId())
+		    console.log("userExists", checkIfUserExists(getUserId()))
+	
+        if(checkIfUserExists(getUserId())){
+          console.log("creating user")
+        	createUser(getUserId())
+      }else{
+        console.log("not creating user")
+      }
     }
 }
 
