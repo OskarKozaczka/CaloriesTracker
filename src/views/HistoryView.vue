@@ -45,8 +45,8 @@ export default {
     },
 
     async fillCalendar(){
-      console.log(await getUserEmail())
-      history = await getHistory(await getUserEmail());
+      console.log(await getUserId())
+      history = await getHistory(await getUserId());
       const dateToday = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+today.getDate();
       this.showRows(dateToday);
     },

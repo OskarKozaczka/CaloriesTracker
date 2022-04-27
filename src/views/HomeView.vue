@@ -58,7 +58,7 @@ export default {
 			document.querySelector('.chart').style.setProperty("--value", value+"%");
 		},
 		async getImages(){
-			this.images = await getUserImages(getUserEmail(),this.today)
+			this.images = await getUserImages(getUserId(),this.today)
 			this.image1 = this.images[0]
 			this.image2 = this.images[1]
 			this.image3 = this.images[2]
@@ -94,7 +94,7 @@ export default {
 			var uploadElem = document.getElementById("upload")
 			var file = uploadElem.files[0] || null
 			uploadElem.value = null
-			await addRecord(getUserEmail(), this.today, kcalValue, file)
+			await addRecord(getUserId(), this.today, kcalValue, file)
 			navigator.vibrate(200)
 			await this.getImages()
 			
@@ -105,7 +105,7 @@ export default {
 		const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 		this.today = date
 		await this.getImages()
-		this.kcal = await getKcal(getUserEmail(),this.today)
+		this.kcal = await getKcal(getUserId(),this.today)
 		this.targetKcal = await getTargetKcal('test')
 		this.setChartValue(this.kcal,this.targetKcal)
 		
