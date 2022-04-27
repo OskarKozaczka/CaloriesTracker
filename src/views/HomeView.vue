@@ -122,8 +122,7 @@ export default {
 		this.today = date
 		await this.getImages()
 		this.kcal = await getKcal(getUserId(),this.today)
-		this.targetKcal = await getTargetKcal('test')
-		var kcalValue = document.getElementById("kcal").value
+		this.targetKcal = await getTargetKcal(getUserId())
 		this.setChartValue(this.kcal,this.targetKcal)
 		
 	},
