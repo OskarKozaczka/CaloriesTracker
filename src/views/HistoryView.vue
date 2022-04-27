@@ -96,7 +96,7 @@ export default {
     },
 
     async addImage(kcal, i, hour){
-      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img src='"+this.image+"' /></td></tr>");},
+      $("#userRows").append("<tr id='row"+i+"'> <td>"+hour+"</td><td>"+kcal+"</td><td><img class = 'image' src='"+this.image+"' /></td></tr>");},
 
     dayClicked(num){
       $("#userRows").empty()
@@ -205,8 +205,8 @@ body {font-family: Verdana, sans-serif;}
 .row {
    float:left;
 }
-.imagee {
-  width: 100%;
+.image {
+  width: 200px;
 }
 
 table{
