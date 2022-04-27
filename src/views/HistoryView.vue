@@ -5,7 +5,7 @@ import $ from "jquery";
 import { getHistory, getUserImages, getSingleImage} from '../DataProvider';
 import {getUserId} from '../AuthProvider';
 
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
 var monthNum;
 var today = new Date();
 var history
@@ -147,8 +147,8 @@ export default {
   <div class="history">
     <div class="month">      
   <ul>
-    <li @click="changeMonth(-1)">Previous</li>
-    <li @click="changeMonth(1)">Next</li>
+    <li @click="changeMonth(-1)">Poprzedni</li>
+    <li @click="changeMonth(1)">Następny</li>
     <li>
       {{month}}<br>
       <span style="font-size:18px">{{year}}</span>
