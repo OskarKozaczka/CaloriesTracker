@@ -72,7 +72,7 @@ export async function logOut(){
         })
 }
 
-export async function getUserEmail(){
+export function getUserEmail(){
     const user = auth.currentUser;
     if (user) {
         console.log("current user email: ", user.email)

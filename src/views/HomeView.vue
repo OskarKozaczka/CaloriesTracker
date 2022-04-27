@@ -2,6 +2,7 @@
 import $ from "jquery";
 import { createUser,  getKcal, getUserImages, addRecord, getTargetKcal} from '../DataProvider';
 import { ref, onMounted,createApp } from 'vue'
+import { getUserEmail } from '../AuthProvider';
 
 
 	$(document).ready(function() {
@@ -28,7 +29,7 @@ import { ref, onMounted,createApp } from 'vue'
 export default {
   data() {
     return {
-      kcal: undefined,
+      kcal: 0,
 	  targetKcal: undefined,
 	  today: undefined,
 	  image: '',
@@ -56,7 +57,7 @@ export default {
 			document.querySelector('.chart').style.setProperty("--value", value+"%");
 		},
 		async getImages(){
-			this.images = await getUserImages("test",this.today)
+			this.images = await getUserImages(getUserEmail(),this.today)
 			this.image1 = this.images[0]
 			this.image2 = this.images[1]
 			this.image3 = this.images[2]
@@ -72,8 +73,7 @@ export default {
 				navigator.serviceWorker.ready.then(function(registration) {
 					registration.showNotification('Dodano wpis', {
 						body: `Kalorie: ${kcal}`,
-						vibrate: [200, 100, 200, 100, 200, 100, 200],
-						tag: 'vibration-sample'
+						vibrate: [200],
 					});
 				});
 			},
@@ -93,7 +93,7 @@ export default {
 			var uploadElem = document.getElementById("upload")
 			var file = uploadElem.files[0] || null
 			uploadElem.value = null
-			await addRecord("test", this.today, kcalValue, file)
+			await addRecord(getUserEmail(), this.today, kcalValue, file)
 			navigator.vibrate(200)
 			await this.getImages()
 			
@@ -104,7 +104,7 @@ export default {
 		const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 		this.today = date
 		await this.getImages()
-		this.kcal = await getKcal("test",this.today)
+		this.kcal = await getKcal(getUserEmail(),this.today)
 		this.targetKcal = await getTargetKcal('test')
 		this.setChartValue(this.kcal,this.targetKcal)
 		
@@ -139,16 +139,16 @@ export default {
 			<input class = "center btn btn-dark" id="upload" type="file" accept="image/*;capture=camera" @change="onFileChange">
 			<button class = "center btn btn-dark" type="button" @click="send()">Zapisz</button> 
 			
-		<div id = "userImages">
-			<img :src="image1" />
-			<img :src="image2" />
-			<img :src="image3" />
-			<img :src="image4" />
-			<img :src="image5" />
-			<img :src="image6" />
-			<img :src="image7" />
-			<img :src="image8" />
-			<img :src="image9" />
+		<div  id = "userImages">
+			<img class = "center" :src="image1" />
+			<img class = "center" :src="image2" />
+			<img class = "center" :src="image3" />
+			<img class = "center" :src="image4" />
+			<img class = "center" :src="image5" />
+			<img class = "center" :src="image6" />
+			<img class = "center" :src="image7" />
+			<img class = "center" :src="image8" />
+			<img class = "center" :src="image9" />
 		</div>
   </main>
 </template>
