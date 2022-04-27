@@ -98,8 +98,8 @@ export default {
   background: #212529;
   width: 20%;
   border: 0;
-  padding-left: 10px;
   padding: 15px;
+  min-width: 26%;
   color: #FFFFFF;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
