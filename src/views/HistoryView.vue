@@ -3,6 +3,7 @@
 
 import $ from "jquery";
 import { getHistory, getUserImages, getSingleImage} from '../DataProvider';
+import {getUserEmail} from '../AuthProvider';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var monthNum;
@@ -44,7 +45,8 @@ export default {
     },
 
     async fillCalendar(){
-      history = await getHistory("test");
+      console.log(await getUserEmail())
+      history = await getHistory(await getUserEmail());
       const dateToday = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+today.getDate();
       this.showRows(dateToday);
     },
