@@ -26,18 +26,17 @@ export default {
     this.setCurrentDate();
     this.setNumberDays(this.month);
     this.user = getUserId();
-    this.target = getTargetKcal(this.user);
     this.fillCalendar(0,0);
   },
 
   methods : {
     setNumberDays(month){
-      if(month === "February"){
+      if(month === "Luty"){
         $('.day29').hide();
         $('.day30').hide();
         $('.day31').hide();
       }
-      else if(month === "November" || month === "June" || month === "September" || month === "April"){
+      else if(month === "Listopad" || month === "Czerwiec" || month === "Wrzesień" || month === "Kwiecień"){
         $('.day31').hide();
       }
       else{
@@ -304,7 +303,7 @@ td{
 .days li .over {
   padding: 5px;
   background: red;
-  color: black !important
+  color: black
 }
 
 .days li .under {
