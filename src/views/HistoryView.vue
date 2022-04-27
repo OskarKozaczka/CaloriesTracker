@@ -2,7 +2,7 @@
 <script>
 
 import $ from "jquery";
-import { getHistory, getUserImages, getSingleImage} from '../DataProvider';
+import { getHistory, getUserImages, getSingleImage, getTargetKcal} from '../DataProvider';
 import {getUserId} from '../AuthProvider';
 
 const months = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
@@ -17,13 +17,16 @@ export default {
       day: undefined,
       year: undefined,
       image: undefined,
-      
+      user: undefined,
+      target: undefined,
     }
   },
 
   mounted() {
     this.setCurrentDate();
     this.setNumberDays(this.month);
+    this.user = getUserId();
+    this.target = getTargetKcal(this.user);
     this.fillCalendar(0,0);
   },
 
@@ -45,13 +48,14 @@ export default {
     },
 
     async fillCalendar(){
-      console.log(await getUserId())
-      history = await getHistory(await getUserId());
+      //this.target = await getTargetKcal(this.user)
+      history = await getHistory(this.user);
       const dateToday = (today.getFullYear())+'-'+(today.getMonth()+1)+'-'+today.getDate();
       this.showRows(dateToday);
     },
 
-    checkConsumption(date){
+    async checkConsumption(date){
+      this.target = getTargetKcal(this.user)
       console.log(date)
       var dayNum = date[0].slice(date[0].length-2)
       if(dayNum < 0){dayNum = date[0].slice(date[0].length-1)}
@@ -60,10 +64,9 @@ export default {
       for(var i = 0; i < dayEntries.length; i++){
         sum += dayEntries[i][1].kcal
       }
-      console.log(date[0][5])
-      console.log(monthNum+1)
+
       if(date[0][5] == monthNum+1){
-        if(sum > 2000){
+        if(sum > await this.target){
         $('.day'+dayNum)[1].classList.remove("under");
         $('.day'+dayNum)[1].classList.add("over");
       }
@@ -308,15 +311,15 @@ td{
 
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
-  .weekdays li, .days li {width: 13.1%;}
+  .row .weekdays li, .days li {width: 13.1%;}
 }
 
 @media screen and (max-width: 420px) {
-  .weekdays li, .days li {width: 12.5%;}
-  .days li .active {padding: 2px;}
+  .row .weekdays li, .days li {width: 12.5%;}
+  .row .days li .active {padding: 2px;}
 }
 
 @media screen and (max-width: 290px) {
-  .weekdays li, .days li {width: 12.2%;}
+  .row .weekdays li, .days li {width: 12.2%;}
 }
 </style>
