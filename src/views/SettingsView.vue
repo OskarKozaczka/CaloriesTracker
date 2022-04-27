@@ -51,7 +51,7 @@ export default {
 
         <div class="notify">
             <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox" checked>
             <span class="slider round"></span> 
             </label>
             <div class="label">Powiadomienia</div>
